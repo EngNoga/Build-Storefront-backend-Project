@@ -4,13 +4,23 @@ import { ProductOrder, ProductOrderStore } from "../models/product_order";
 const store = new ProductOrderStore();
 
 const index = async (_req: Request, res: Response) => {
-  const productOrder = await store.index();
-  res.json(productOrder);
+  try {
+    const productOrder = await store.index();
+    return res.json(productOrder);
+  } catch (err) {
+    res.status(400);
+    return res.json(err);
+  }
 };
 
 const show = async (req: Request, res: Response) => {
-  const productOrder = await store.show(req.body.id);
-  res.json(productOrder);
+  try {
+    const productOrder = await store.show(req.body.id);
+    res.json(productOrder);
+  } catch (err) {
+    res.status(400);
+    return res.json(err);
+  }
 };
 
 const addProduct = async (req: Request, res: Response) => {
@@ -22,16 +32,21 @@ const addProduct = async (req: Request, res: Response) => {
 
   try {
     const addedProduct = await store.addProduct(product);
-    res.json(addedProduct);
+    return res.json(addedProduct);
   } catch (err) {
     res.status(400);
-    res.json(err);
+    return res.json(err);
   }
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.params.id);
+    return res.json(deleted);
+  } catch (err) {
+    res.status(400);
+    return res.json(err);
+  }
 };
 
 const productOrderRoutes = (app: express.Application) => {
